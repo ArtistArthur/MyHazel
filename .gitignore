@@ -1,0 +1,7 @@
+#dirtory
+.vs/
+bin/
+bin-int/
+
+#files
+*.user
