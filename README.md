@@ -8,3 +8,16 @@
 * `Hazel.h`包含引擎的相关头文件，用户可以仅仅包含这一个头文件，就可以使用引擎的所有内容，更方便，就不需要通过相对路径包含了
 * `Sandbox.cpp`是用户编写游戏的部分
 * `Sandbox`类通过继承`Application`类来使用引擎
+
+## Logging system
+我们需要一个日志系统来记录我们的引擎做了什么，正在做什么等等，以了解我们的引擎：  
+* 引用日志库`spdlog`，把它作为一个子模块嵌在引擎里
+  * `git submodule add https://github.com/gabime/spdlog Hazel/vendor/spdlog`
+  * 以后的许多子模块都存放在`Hazel/vendor/`下
+
+但是为了减少依赖性，我们需要封装`spdlog`的API，以防以后改变日志模块时需要重写代码
+* 通过宏封装
+* 定义自己的Log类
+  * 定义一个引擎的`CoreLogger`对象，一个应用的`ClientLogger`对象，以及获得他们的`GetCoreLogger();`和`GetClientLogger();`
+  * 一个初始化函数`Init();`
+  * 一系列宏来输出不同类型的Log：`trace info warn error fatal`等
