@@ -21,3 +21,26 @@
   * 定义一个引擎的`CoreLogger`对象，一个应用的`ClientLogger`对象，以及获得他们的`GetCoreLogger();`和`GetClientLogger();`
   * 一个初始化函数`Init();`
   * 一系列宏来输出不同类型的Log：`trace info warn error fatal`等
+
+## Premake
+
+## EventSystem planning
+Application是Hazel主要的文件，里面有许多类  
+* Window类是我们的窗口
+  * renderer
+  * resize、 close
+    * 收到一个event
+    * communicate with Application，window不应该知道Application的存在
+      * window里发生一个event 通过回调函数传递给Application
+      * Application在创建window的时候同时set call back，当Window产生事件的时候，就检查是否有相应的callback存在，
+
+## EventSystem 
+初始版本的Event是阻塞的，意味着当事件发生时，需要马上处理它。一个更好的策略是"buffer events in an bus and process them during the "event" part of the update stage."  
+我们需要一个`enum class EventType`去表示事件的类型：
+* 空类型`None`
+* 窗口事件：`WindowClose`,`WindowResize`, `WindowFocus`, `WindowLostFocus`, `WindowMoved`
+* 应用事件：`AppTick`, `AppUpdate`, `AppRender`
+* 键盘事件：`KeyPressed`, `KeyReleased`
+* 鼠标事件：`MouseButtonPressed`, `MouseButtonReleased`, `MouseMoved`, `MouseScrolled`
+
+`EventCategory`记录事件的类别，而不用一个一个去判断是某个特定的事件。  
