@@ -10,7 +10,6 @@ namespace Hazel{
 		void Run();
 	};
 	//to be defined in client
-	//提供给用户的一个接口，用户通过这个接口返回自己定义的类
 	Application* CreateApplication();
 
 }

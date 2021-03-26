@@ -23,7 +23,22 @@
   * 一系列宏来输出不同类型的Log：`trace info warn error fatal`等
 
 ## Premake
-
+为了可以不仅仅在win-vs上构建项目，可以支持Linux，macos等平台上构建项目，加入premake来构建项目，不选cmake的原因是cmake太复杂，并且没必要的复杂。  
+premake用lua来编写。  
+* `workspace`是类似solution的东西，是你整个项目的工作区，这里叫`Hazel`  
+  * `architecture`是x64，x86等
+  * `configurations`代表代码版本，比如有`Debug` `Release`（Debug的进阶版，去除了Debug的符号表等，开启了优化等，但是日志等还是存在， `Dist`（完全的发行版，日志等任何调试信息都去除，用户版本）
+* `project`对应与主目录下的Hazel目录，和Sandbox平行的，是项目名称
+  *  Hazel的位置：与premake在同一目录下，因此直接是`Hazel`
+  *  `kind`标识这个项目最终产生什么文件，这里是`SharedLib`
+  *  `language`标识项目的语言，这里是C++
+  *  `target`是可执行文件的位置
+  *  `obj`是目标文件的位置
+  *  `files`是我们需要包含进去的文件，C++文件，头文件等
+     *  `"%{prj.name}/src/**.h"`表示在Hazel下的sr下的头文件，两个星代表递归包含
+     *  `"%{prj.name}/src/**.cpp"`类似
+  * `include`表示要包含的头文件，要包含的是指使用了其他模块，需要包含的目录
+    * 使用了`spdlog`模块，因此要包含`%{prj.name}/vendor/spdlog/include`
 ## EventSystem planning
 Application是Hazel主要的文件，里面有许多类  
 * Window类是我们的窗口
